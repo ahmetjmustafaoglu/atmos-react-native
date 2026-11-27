@@ -35,6 +35,14 @@ The app is feature-complete for PRD v1.0. Possible next work, each needing a use
   were right. **Lesson:** the same rule ("isolate every value") is not right for every value;
   a time contains a word. Four apps of the same product are four reviews of each other.
 
+- **Same day twice on clock-change days** (`fix/dst-gap`): `parseLocalTime` moved times that
+  do not exist (clocks jumping forward) backward, so a midnight became the previous day, and
+  resolved repeated hours to their second occurrence. Found by probing the function against an
+  independent `Intl` oracle; 626 wrong local times in 2026–2027. Fixed with the "compatible"
+  rule, and tested over every clock change in every zone. The same bug is written up as a
+  graded task on the `task/dst-midnight-day` branch (`tasks/README.md`). **Lesson:** a bug
+  report shows one symptom; measure the whole bug before fixing it.
+
 ## Process rule
 After a step is merged into `main`, add the "📍 You are on Step N" section to the top of that
 step branch's README, then push the branch.
