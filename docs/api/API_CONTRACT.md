@@ -185,7 +185,7 @@ Any code not in this table maps to `WeatherCondition.Unknown`; it must never cra
 | Rule | Value |
 |---|---|
 | Timeouts | Connect 10 s, read 15 s |
-| Retries | Up to 2, only for network errors and HTTP 5xx, with exponential back-off (1 s, 2 s) |
-| No retry for | HTTP 4xx (our request is wrong; retrying will not help) |
+| Retries | Up to 2, for network errors, HTTP 5xx and HTTP 429, with exponential back-off (1 s, 2 s); for 429, the `Retry-After` seconds instead, if given and at most 10 s ([ADR-0012](../architecture/adr/0012-retry-rate-limited-requests.md)) |
+| No retry for | Other HTTP 4xx (our request is wrong; retrying will not help); 429 with `Retry-After` over 10 s (the user hears "try later" at once); a cancelled request |
 | Cache freshness | 30 minutes (F-07) |
 | User-Agent | `Atmos/<version> (React Native; android|ios)`; no personal data |
