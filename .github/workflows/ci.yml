@@ -10,7 +10,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [main, "step-*", "fix/*"]
+    branches: [main, "step-*", "fix/*", "task/*"]
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -37,6 +37,24 @@ jobs:
         run: npm run lint
       - name: Tests
         run: npx jest --ci --coverage
+
+  tasks:
+    name: Task grader (the hidden tests accept every correct fix, reject the rest)
+    needs: checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Grade task 001 against buggy, hard-coded, reference and alternative code
+        run: tasks/grade.sh > grade.log 2>&1 || { cat grade.log; python3 scripts/annotate-log.py grade.log "Task grader"; exit 1; }
+      - name: Show the grades
+        if: always()
+        run: cat grade.log
 
   android:
     name: Android build
