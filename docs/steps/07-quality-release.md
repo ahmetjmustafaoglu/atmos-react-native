@@ -7,8 +7,8 @@ Steps 03 to 06 are proven by 226 tests that run in Node in seconds. This step pr
 against the real API, in English, Turkish and Arabic, and CI records screenshots that a person
 then looks at. It also gets the app ready to ship: versions, system texts in three languages,
 the privacy manifest, and a release checklist. The same step exists for
-[Android](https://github.com/AhmedJAbuSada/atmos-android/blob/step-07-quality-release/docs/steps/07-quality-release.md)
-and [iOS](https://github.com/AhmedJAbuSada/atmos-ios/blob/step-07-quality-release/docs/steps/07-quality-release.md).
+[Android](https://github.com/ahmetjmustafaoglu/atmos-android/blob/step-07-quality-release/docs/steps/07-quality-release.md)
+and [iOS](https://github.com/ahmetjmustafaoglu/atmos-ios/blob/step-07-quality-release/docs/steps/07-quality-release.md).
 
 ## What this step adds
 

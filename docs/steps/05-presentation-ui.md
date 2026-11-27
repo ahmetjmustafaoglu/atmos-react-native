@@ -5,8 +5,8 @@
 Every screen is built as a **view of a state value**: props in, callbacks out. No store, no
 repository, no navigation. A view that can only show what it is given can be built, tested and
 reviewed on its own, in every language and theme. The same step exists for
-[Android](https://github.com/AhmedJAbuSada/atmos-android/blob/step-05-presentation-ui/docs/steps/05-presentation-ui.md)
-and [iOS](https://github.com/AhmedJAbuSada/atmos-ios/blob/step-05-presentation-ui/docs/steps/05-presentation-ui.md).
+[Android](https://github.com/ahmetjmustafaoglu/atmos-android/blob/step-05-presentation-ui/docs/steps/05-presentation-ui.md)
+and [iOS](https://github.com/ahmetjmustafaoglu/atmos-ios/blob/step-05-presentation-ui/docs/steps/05-presentation-ui.md).
 
 ## What this step adds
 

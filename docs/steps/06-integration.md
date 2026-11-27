@@ -7,8 +7,8 @@ This step connects them: **view models** turn use-case results into the states t
 already understand, **containers** connect a view model to its view, and the **composition
 root** builds the whole object graph once. After this step the app works end to end. The same
 step exists for
-[Android](https://github.com/AhmedJAbuSada/atmos-android/blob/step-06-integration/docs/steps/06-integration.md)
-and [iOS](https://github.com/AhmedJAbuSada/atmos-ios/blob/step-06-integration/docs/steps/06-integration.md).
+[Android](https://github.com/ahmetjmustafaoglu/atmos-android/blob/step-06-integration/docs/steps/06-integration.md)
+and [iOS](https://github.com/ahmetjmustafaoglu/atmos-ios/blob/step-06-integration/docs/steps/06-integration.md).
 
 ## What this step adds
 

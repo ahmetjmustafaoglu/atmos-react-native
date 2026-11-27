@@ -1,8 +1,8 @@
 # Architecture
 
 Atmos for React Native follows **Clean Architecture** with three layers, the same as the
-[Android](https://github.com/AhmedJAbuSada/atmos-android/blob/main/docs/architecture/ARCHITECTURE.md)
-and [iOS](https://github.com/AhmedJAbuSada/atmos-ios/blob/main/docs/architecture/ARCHITECTURE.md)
+[Android](https://github.com/ahmetjmustafaoglu/atmos-android/blob/main/docs/architecture/ARCHITECTURE.md)
+and [iOS](https://github.com/ahmetjmustafaoglu/atmos-ios/blob/main/docs/architecture/ARCHITECTURE.md)
 versions. One TypeScript codebase serves Android and iOS. The *reasons* for each choice are
 in the [ADRs](adr/).
 

@@ -2,8 +2,8 @@
 
 **Branch:** `step-03-domain-layer` · **Previous:** [step 02](02-project-structure.md) · **Next:** [step 04, data layer](04-data-layer.md)
 
-The same rules as the [Android](https://github.com/AhmedJAbuSada/atmos-android/blob/step-03-domain-layer/docs/steps/03-domain-layer.md)
-and [iOS](https://github.com/AhmedJAbuSada/atmos-ios/blob/step-03-domain-layer/docs/steps/03-domain-layer.md)
+The same rules as the [Android](https://github.com/ahmetjmustafaoglu/atmos-android/blob/step-03-domain-layer/docs/steps/03-domain-layer.md)
+and [iOS](https://github.com/ahmetjmustafaoglu/atmos-ios/blob/step-03-domain-layer/docs/steps/03-domain-layer.md)
 domains, written in TypeScript with no React and no React Native. They run in plain Node:
 71 tests in about two seconds.
 

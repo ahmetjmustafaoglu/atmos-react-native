@@ -6,8 +6,8 @@ The data layer talks to the outside world (Open-Meteo, AsyncStorage, the GPS) an
 **implements the interfaces the domain declared in step 03**. Nothing outside `src/data` knows
 that `fetch`, JSON or AsyncStorage exist: the composition root receives domain interfaces and
 nothing else. The same layer exists for
-[Android](https://github.com/AhmedJAbuSada/atmos-android/blob/step-04-data-layer/docs/steps/04-data-layer.md)
-and [iOS](https://github.com/AhmedJAbuSada/atmos-ios/blob/step-04-data-layer/docs/steps/04-data-layer.md).
+[Android](https://github.com/ahmetjmustafaoglu/atmos-android/blob/step-04-data-layer/docs/steps/04-data-layer.md)
+and [iOS](https://github.com/ahmetjmustafaoglu/atmos-ios/blob/step-04-data-layer/docs/steps/04-data-layer.md).
 
 ## What this step adds
 
