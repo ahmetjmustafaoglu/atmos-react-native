@@ -5,6 +5,10 @@ All notable changes to Atmos for React Native. The format follows
 
 ## [Unreleased]
 ### Fixed
+- On the day clocks change, the 7-day list no longer shows the same day twice where clocks
+  jump at midnight (Santiago, Havana, the Azores), and a repeated hour keeps both of its
+  occurrences. Times are read with the "compatible" rule; tested over every clock change in
+  every time zone.
 - Arabic times read in the natural order ("ص 7:29", not "7:29 ص" with the AM/PM word first).
   Found by comparing the Arabic screenshots with the Flutter app.
 
