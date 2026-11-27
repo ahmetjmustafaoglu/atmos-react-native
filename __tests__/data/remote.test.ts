@@ -13,6 +13,7 @@ import {
 import { createOpenMeteoApi } from '../../src/data/remote/openMeteoApi';
 import {
     networkError,
+    tooManyRequests,
     ok,
     replayingClient,
     sample,
@@ -54,6 +55,39 @@ describe('withRetry (API_CONTRACT §4)', () => {
         expect(client.urls).toHaveLength(1);
     });
 
+    test('retries 429 "Too Many Requests" after the Retry-After the server asks for', async () => {
+        const { client, delays, get } = run(tooManyRequests('3'), ok('{}'));
+        await expect(get()).resolves.toEqual({ status: 200, body: '{}' });
+        expect(client.urls).toHaveLength(2);
+        expect(delays).toEqual([3000]);
+    });
+
+    test('retries 429 without Retry-After with the normal back-off', async () => {
+        const { delays, get } = run(
+            tooManyRequests(),
+            tooManyRequests('not-a-number'),
+            ok('{}'),
+        );
+        await expect(get()).resolves.toMatchObject({ status: 200 });
+        expect(delays).toEqual([1000, 2000]);
+    });
+
+    test('given a Retry-After longer than 10 s, then does not retry: the user hears "try later" now', async () => {
+        const { client, get } = run(tooManyRequests('60'), ok('{}'));
+        await expect(get()).resolves.toMatchObject({ status: 429 });
+        expect(client.urls).toHaveLength(1);
+    });
+
+    test('given 429 every time, then gives back the last answer after two retries', async () => {
+        const { client, get } = run(
+            tooManyRequests('1'),
+            tooManyRequests('1'),
+            tooManyRequests('1'),
+        );
+        await expect(get()).resolves.toMatchObject({ status: 429 });
+        expect(client.urls).toHaveLength(3);
+    });
+
     test('does not retry a cancellation: the user left', async () => {
         const { client, get } = run({ error: new CancelledError('x') });
         await expect(get()).rejects.toBeInstanceOf(CancelledError);
@@ -90,7 +124,11 @@ describe('createFetchHttpClient', () => {
     test('returns status and body and sends the User-Agent', async () => {
         const fetchMock = jest.fn(
             async () =>
-                ({ status: 200, text: async () => 'hello' } as Response),
+                ({
+                    status: 200,
+                    headers: new Headers(),
+                    text: async () => 'hello',
+                } as Response),
         );
         globalThis.fetch = fetchMock as typeof fetch;
         const client = createFetchHttpClient('Atmos-Test/1.0');
@@ -123,6 +161,24 @@ describe('createFetchHttpClient', () => {
         );
         controller.abort();
         await expect(request).rejects.toBeInstanceOf(CancelledError);
+    });
+
+    test('passes on the Retry-After header', async () => {
+        globalThis.fetch = jest.fn(
+            async () =>
+                ({
+                    status: 429,
+                    headers: new Headers({ 'Retry-After': '5' }),
+                    text: async () => '{}',
+                } as Response),
+        ) as typeof fetch;
+        await expect(
+            createFetchHttpClient('Atmos-Test/1.0').get('https://x.test'),
+        ).resolves.toEqual({
+            status: 429,
+            body: '{}',
+            retryAfter: '5',
+        });
     });
 
     test('a network failure is passed on as it is', async () => {

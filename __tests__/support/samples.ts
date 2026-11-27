@@ -26,7 +26,11 @@ export function sample(name: keyof typeof SAMPLES): string {
 }
 
 type Reply =
-    | { readonly status: number; readonly body: string }
+    | {
+          readonly status: number;
+          readonly body: string;
+          readonly retryAfter?: string;
+      }
     | { readonly error: unknown };
 
 /** Answers each request with the next reply and remembers every URL it was asked for. */
@@ -57,4 +61,11 @@ export const status = (code: number, body = '{}'): Reply => ({
 });
 export const networkError = (): Reply => ({
     error: new TypeError('Network request failed'),
+});
+
+/** HTTP 429 "Too Many Requests", with the `Retry-After` header when given. */
+export const tooManyRequests = (retryAfter?: string): Reply => ({
+    status: 429,
+    body: '{"error":true,"reason":"Too many requests"}',
+    ...(retryAfter !== undefined ? { retryAfter } : {}),
 });
