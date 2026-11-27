@@ -1,7 +1,7 @@
 # Roadmap — the seven steps
 
 ```bash
-git clone https://github.com/AhmedJAbuSada/atmos-react-native.git
+git clone https://github.com/ahmetjmustafaoglu/atmos-react-native.git
 cd atmos-react-native
 git switch step-03-domain-layer   # any step
 ```

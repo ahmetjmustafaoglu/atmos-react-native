@@ -47,6 +47,16 @@ The app is feature-complete for PRD v1.0. Possible next work, each needing a use
 After a step is merged into `main`, add the "📍 You are on Step N" section to the top of that
 step branch's README, then push the branch.
 
+## Hand-over (2026-11-27): branches waiting for CI
+The GitHub account was renamed to `ahmetjmustafaoglu`; old links redirect, and pushes to the old URL still
+work. The session that pushed these could no longer read CI results under the new name, so a
+new session (with the `ahmetjmustafaoglu/atmos-*` repositories selected) must check and merge:
+- `task/dst-midnight-day`: the bug-to-task example (`tasks/README.md`). Check that the **Task grader** CI job is green; it stays a separate branch, like the step branches.
+- `fix/dst-gap`: the clock-change fix. Green CI → merge into `main` with `--no-ff`.
+- `fix/github-name`: links to the new account name. Green CI → merge.
+
+After merging, move `release/1.0` only if the owner asks: it is the stable 1.0 snapshot.
+
 ## Notes for the next session
 - Real Open-Meteo responses are in `docs/api/samples/`; tests import them through
   `__tests__/support/samples.ts`.

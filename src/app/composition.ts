@@ -47,7 +47,7 @@ export interface AppDependencies {
 
 export const LINKS = {
     dataSource: 'https://open-meteo.com',
-    sourceCode: 'https://github.com/AhmedJAbuSada/atmos-react-native',
+    sourceCode: 'https://github.com/ahmetjmustafaoglu/atmos-react-native',
 } as const;
 
 /** Builds the whole graph from a data module and a platform: real ones, or fakes in tests. */

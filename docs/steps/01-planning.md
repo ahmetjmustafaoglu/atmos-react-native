@@ -3,8 +3,8 @@
 **Branch:** `step-01-planning` · **Next:** [step 02, project structure](02-project-structure.md)
 
 No code yet, on purpose. This is the third codebase for the same product
-([Android](https://github.com/AhmedJAbuSada/atmos-android),
-[iOS](https://github.com/AhmedJAbuSada/atmos-ios)), so this step shows how a team adds a
+([Android](https://github.com/ahmetjmustafaoglu/atmos-android),
+[iOS](https://github.com/ahmetjmustafaoglu/atmos-ios)), so this step shows how a team adds a
 **cross-platform** app to a product that already exists natively.
 
 ## Shared vs platform-specific

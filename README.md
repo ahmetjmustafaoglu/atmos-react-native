@@ -7,7 +7,7 @@ coding agent.**
 <!-- step-banner:start -->
 > ### 📍 You are on `main`: the finished app
 > This branch is the complete app. To **learn how it was built**, start at
-> [**Step 01 — Planning: documents before code**](https://github.com/AhmedJAbuSada/atmos-react-native/tree/step-01-planning) and follow the steps in order:
+> [**Step 01 — Planning: documents before code**](https://github.com/ahmetjmustafaoglu/atmos-react-native/tree/step-01-planning) and follow the steps in order:
 > each step branch has its own README that explains what that step is, why it exists,
 > and what changed. All steps: [ROADMAP.md](docs/ROADMAP.md).
 <!-- step-banner:end -->
@@ -55,10 +55,10 @@ Full picture: [ARCHITECTURE.md](docs/architecture/ARCHITECTURE.md).
 
 | Platform | Repository | Status |
 |---|---|---|
-| Android (Kotlin, Compose) | [atmos-android](https://github.com/AhmedJAbuSada/atmos-android) | ✅ v1.0.0 |
-| iOS (Swift, SwiftUI) | [atmos-ios](https://github.com/AhmedJAbuSada/atmos-ios) | ✅ v1.0.0 |
+| Android (Kotlin, Compose) | [atmos-android](https://github.com/ahmetjmustafaoglu/atmos-android) | ✅ v1.0.0 |
+| iOS (Swift, SwiftUI) | [atmos-ios](https://github.com/ahmetjmustafaoglu/atmos-ios) | ✅ v1.0.0 |
 | **React Native** (TypeScript) | you are here | ✅ v1.0.0 |
-| Flutter (Dart) | [atmos-flutter](https://github.com/AhmedJAbuSada/atmos-flutter) | ✅ v1.0.0 |
+| Flutter (Dart) | [atmos-flutter](https://github.com/ahmetjmustafaoglu/atmos-flutter) | ✅ v1.0.0 |
 
 ## The seven steps
 
@@ -89,7 +89,7 @@ language · saved cities · offline with the last data · °C/°F and wind units
 
 ## Author
 **Ahmed J. AbuSada**, senior mobile and front-end developer ·
-[@AhmedJAbuSada](https://github.com/AhmedJAbuSada)
+[@ahmetjmustafaoglu](https://github.com/ahmetjmustafaoglu)
 
 ## License
 [MIT](LICENSE). Weather data © Open-Meteo.com, [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
