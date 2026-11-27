@@ -4,6 +4,10 @@ All notable changes to Atmos for React Native. The format follows
 [Keep a Changelog](https://keepachangelog.com/); versions follow [SemVer](https://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Short rate limits from Open-Meteo (HTTP 429) are retried, waiting the `Retry-After` the server
+  asks for (up to 10 s), instead of showing an error.
+
 ### Fixed
 - On the day clocks change, the 7-day list no longer shows the same day twice where clocks
   jump at midnight (Santiago, Havana, the Azores), and a repeated hour keeps both of its

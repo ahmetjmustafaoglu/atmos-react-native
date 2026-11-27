@@ -42,6 +42,9 @@ The app is feature-complete for PRD v1.0. Possible next work, each needing a use
   rule, and tested over every clock change in every zone. The same bug is written up as a
   graded task on the `task/dst-midnight-day` branch (`tasks/README.md`). **Lesson:** a bug
   report shows one symptom; measure the whole bug before fixing it.
+- **Retry 429 "Too Many Requests"** (`fix/retry-429`, ADR-0012): the owner decided that a
+  rate-limited request is retried, waiting the server's `Retry-After` (up to 10 s), instead of
+  showing an error. Same rule in all four apps; API_CONTRACT §4 updated.
 
 ## Process rule
 After a step is merged into `main`, add the "📍 You are on Step N" section to the top of that
