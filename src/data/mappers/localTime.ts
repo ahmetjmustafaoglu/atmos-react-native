@@ -47,10 +47,17 @@ export function zoneOffsetMs(timeZone: string, epochMs: number): number {
     return asUtc - Math.floor(epochMs / 1000) * 1000;
 }
 
+const DAY_MS = 24 * 60 * 60 * 1000;
+
 /**
  * Reads "2026-11-11T10:15" or "2026-11-11" as a time in `zone`. `zone` is either an IANA name
  * or a fixed offset in seconds (the fallback when the name is unknown). Returns `undefined`
  * for text in any other format.
+ *
+ * On the days clocks change, a local time can exist twice (clocks go back) or not at all
+ * (clocks jump forward). The rule, like JavaScript's Temporal ("compatible"): a repeated time
+ * is the earlier instant; a missing time is read with the offset from before the jump, which
+ * moves it forward by the length of the gap (so midnight never becomes the previous day).
  */
 export function parseLocalTime(
     text: string | null | undefined,
@@ -71,9 +78,11 @@ export function parseLocalTime(
     if (typeof zone === 'number') {
         return wallClock - zone * 1000;
     }
-    // The offset depends on the instant we are looking for; two guesses settle it, also on the
-    // days the clocks change.
-    const first = wallClock - zoneOffsetMs(zone, wallClock);
-    const second = wallClock - zoneOffsetMs(zone, first);
-    return second;
+    // A day either side is far enough from any change; no zone changes twice within a day.
+    const before = zoneOffsetMs(zone, wallClock - DAY_MS);
+    const after = zoneOffsetMs(zone, wallClock + DAY_MS);
+    const candidates = [wallClock - before, wallClock - after].filter(
+        instant => instant + zoneOffsetMs(zone, instant) === wallClock,
+    );
+    return candidates.length > 0 ? Math.min(...candidates) : wallClock - before;
 }

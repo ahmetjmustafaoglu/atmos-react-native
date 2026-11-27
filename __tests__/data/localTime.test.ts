@@ -19,6 +19,24 @@ describe('parseLocalTime', () => {
         );
     });
 
+    test('a daily date never moves to the previous day where clocks jump at midnight', () => {
+        // Santiago skips 00:00–00:59 on 6 Sept 2026: the day starts at 01:00 (the reported bug).
+        expect(parseLocalTime('2026-09-06', 'America/Santiago')).toBe(
+            Date.UTC(2026, 8, 6, 4, 0),
+        );
+    });
+
+    test('a repeated time is its first occurrence; a missing one moves past the gap', () => {
+        // Ceuta, 25 Oct 2026: 02:00–02:59 happens twice (+2, then +1). The first is 00:00 UTC.
+        expect(parseLocalTime('2026-10-25T02:00', 'Africa/Ceuta')).toBe(
+            Date.UTC(2026, 9, 25, 0, 0),
+        );
+        // New York, 8 Mar 2026: 02:30 does not exist; it reads as 03:30 EDT (07:30 UTC).
+        expect(parseLocalTime('2026-03-08T02:30', 'America/New_York')).toBe(
+            Date.UTC(2026, 2, 8, 7, 30),
+        );
+    });
+
     test('a date without a time is the start of that day at the place', () => {
         expect(parseLocalTime('2026-11-11', 'Europe/Istanbul')).toBe(
             Date.UTC(2026, 10, 10, 21, 0),
