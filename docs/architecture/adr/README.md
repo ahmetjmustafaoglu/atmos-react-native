@@ -16,5 +16,6 @@ edited; a new ADR supersedes an old one.
 | [0009](0009-testing-jest-and-maestro.md) | Testing: Jest, React Native Testing Library, Maestro | Accepted |
 | [0010](0010-location-libraries.md) | Location: community Geolocation and react-native-permissions | Accepted |
 | [0011](0011-react-native-localize.md) | Reading the OS language: react-native-localize | Accepted |
+| [0012](0012-retry-rate-limited-requests.md) | Retry rate-limited requests (HTTP 429), honouring Retry-After | Accepted |
 
 Template: [`template.md`](template.md).

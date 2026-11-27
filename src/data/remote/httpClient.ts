@@ -1,9 +1,14 @@
+/** What the data layer needs from an HTTP answer. */
+export interface HttpResponse {
+    readonly status: number;
+    readonly body: string;
+    /** The `Retry-After` header, if the server sent one (with 429 "Too Many Requests"). */
+    readonly retryAfter?: string;
+}
+
 /** The smallest thing the data layer needs from the network: GET a URL, get text and a status. */
 export interface HttpClient {
-    get(
-        url: string,
-        signal?: AbortSignal,
-    ): Promise<{ readonly status: number; readonly body: string }>;
+    get(url: string, signal?: AbortSignal): Promise<HttpResponse>;
 }
 
 /** Raised for a request that took longer than the contract allows. */
@@ -47,7 +52,12 @@ export function createFetchHttpClient(
                     headers: { 'User-Agent': userAgent },
                     signal: controller.signal,
                 });
-                return { status: response.status, body: await response.text() };
+                const retryAfter = response.headers.get('Retry-After');
+                return {
+                    status: response.status,
+                    body: await response.text(),
+                    ...(retryAfter !== null ? { retryAfter } : {}),
+                };
             } catch (error) {
                 if (timedOut) {
                     throw new TimeoutError(url);
@@ -64,9 +74,39 @@ export function createFetchHttpClient(
     };
 }
 
+/** The longest `Retry-After` the app waits for: longer, and the user hears "try later" now. */
+export const MAX_RETRY_AFTER_MS = 10_000;
+
 /**
- * Retries network errors and HTTP 5xx with exponential back-off: `baseDelayMs`, then twice that.
- * HTTP 4xx is **not** retried (our request is wrong), and neither is a cancellation.
+ * How long to wait before retrying `response`, or `undefined` when it must not be retried
+ * (API_CONTRACT §4, ADR-0012):
+ * - HTTP 5xx: back-off (`backOffMs`);
+ * - HTTP 429 "Too Many Requests": the server's `Retry-After` in seconds, if it sent one and it is
+ *   at most 10 s; longer is not retried; without the header (or as a date), the back-off;
+ * - any other answer: not retried. Another 4xx means our request is wrong.
+ */
+export function retryDelayMs(
+    response: HttpResponse,
+    backOffMs: number,
+): number | undefined {
+    if (response.status >= 500) {
+        return backOffMs;
+    }
+    if (response.status !== 429) {
+        return undefined;
+    }
+    const seconds = response.retryAfter?.trim();
+    if (!seconds || !/^\d+$/.test(seconds)) {
+        return backOffMs;
+    }
+    const ms = Number(seconds) * 1000;
+    return ms <= MAX_RETRY_AFTER_MS ? ms : undefined;
+}
+
+/**
+ * Retries network errors, HTTP 5xx and HTTP 429 with exponential back-off (`baseDelayMs`, then
+ * twice that), or the server's `Retry-After` for 429 (see {@link retryDelayMs}). Other 4xx are
+ * **not** retried, and neither is a cancellation.
  */
 export function withRetry(
     client: HttpClient,
@@ -84,9 +124,12 @@ export function withRetry(
     return {
         async get(url, signal) {
             for (let attempt = 0; ; attempt += 1) {
+                const backOff = baseDelayMs * 2 ** attempt;
+                let wait: number | undefined;
                 try {
                     const response = await client.get(url, signal);
-                    if (response.status < 500 || attempt >= maxRetries) {
+                    wait = retryDelayMs(response, backOff);
+                    if (wait === undefined || attempt >= maxRetries) {
                         return response;
                     }
                 } catch (error) {
@@ -94,8 +137,9 @@ export function withRetry(
                     if (!retryable || attempt >= maxRetries) {
                         throw error;
                     }
+                    wait = backOff;
                 }
-                await sleep(baseDelayMs * 2 ** attempt);
+                await sleep(wait);
             }
         },
     };
