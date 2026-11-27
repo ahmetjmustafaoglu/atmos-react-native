@@ -6,7 +6,12 @@ module.exports = {
         'node_modules/(?!((jest-)?react-native|@react-native(-community)?|@react-navigation)/)',
     ],
     // Shared helpers for tests, not tests themselves.
-    testPathIgnorePatterns: ['/node_modules/', '<rootDir>/__tests__/support/'],
+    // Task hidden tests run only through tasks/grade.sh, against each candidate solution.
+    testPathIgnorePatterns: [
+        '/node_modules/',
+        '<rootDir>/__tests__/support/',
+        '<rootDir>/tasks/',
+    ],
     collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/testing/**'],
     // The domain holds the business rules, so it has the highest bar (NF-05).
     coverageThreshold: {
